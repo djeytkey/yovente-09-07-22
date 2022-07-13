@@ -7,6 +7,10 @@
     white-space: normal;
 }
 
+.modal-table.delivery-status-list td {
+	white-space: nowrap;
+}
+
 table.f-wth {
 	width: 100%;
 }

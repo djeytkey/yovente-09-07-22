@@ -98,7 +98,7 @@
         <div class="container-fluid">
           <div class="col-md-12">
             <div class="brand-text float-left mt-4">
-                <h3>{{ucfirst(trans('file.welcome'))}} <span>{{ucfirst(Auth::user()->last_name)}} {{ucfirst(Auth::user()->first_name)}}</span> </h3>
+                <h3>{{ucfirst(trans('file.welcome'))}} <span>{{strtoupper(Auth::user()->last_name)}} {{ucfirst(Auth::user()->first_name)}}</span> </h3>
             </div>
             <div class="filter-toggle btn-group">
               <button class="btn btn-secondary date-btn" data-start_date="{{date('Y-m-d')}}" data-end_date="{{date('Y-m-d')}}">{{trans('file.Today')}}</button>
@@ -116,7 +116,7 @@
             <div class="col-md-12 form-group">
               <div class="row">
                 <!-- Count item widget-->
-                <div class="col-sm-2">
+                <div class="col-sm-3">
                   <div class="wrapper count-title text-center">
                     <div class="icon"><i class="dripicons-graph-bar" style="color: #733686"></i></div>
                     <div class="name"><strong style="color: #733686">{{ trans('file.Total Orders') }}</strong></div>
@@ -124,7 +124,7 @@
                   </div>
                 </div>
                 <!-- Count item widget-->
-                <div class="col-sm-2">
+                <div class="col-sm-3">
                   <div class="wrapper count-title text-center">
                     <div class="icon"><i class="dripicons-return" style="color: #ff8952"></i></div>
                     <div class="name"><strong style="color: #ff8952">{{trans('file.Delivered / Invoiced')}}</strong></div>
@@ -132,7 +132,7 @@
                   </div>
                 </div>
                 <!-- Count item widget-->
-                <div class="col-sm-2">
+                <div class="col-sm-3">
                   <div class="wrapper count-title text-center">
                     <div class="icon"><i class="dripicons-media-loop" style="color: #00c689"></i></div>
                     <div class="name"><strong style="color: #00c689">{{trans('file.In progress')}}</strong></div>
@@ -140,23 +140,7 @@
                   </div>
                 </div>
                 <!-- Count item widget-->
-                <div class="col-sm-2">
-                  <div class="wrapper count-title text-center">
-                    <div class="icon"><i class="dripicons-trophy" style="color: #297ff9"></i></div>
-                    <div class="name"><strong style="color: #297ff9">{{trans('file.profit')}}</strong></div>
-                    <div class="count-number profit-data">{{number_format((float)$profit, 2, '.', '')}}</div>
-                  </div>
-                </div>
-                <!-- Count item widget-->
-                <div class="col-sm-2">
-                  <div class="wrapper count-title text-center">
-                    <div class="icon"><i class="dripicons-trophy" style="color: #297ff9"></i></div>
-                    <div class="name"><strong style="color: #297ff9">{{trans('file.profit')}}</strong></div>
-                    <div class="count-number profit-data">{{number_format((float)$profit, 2, '.', '')}}</div>
-                  </div>
-                </div>
-                <!-- Count item widget-->
-                <div class="col-sm-2">
+                <div class="col-sm-3">
                   <div class="wrapper count-title text-center">
                     <div class="icon"><i class="dripicons-trophy" style="color: #297ff9"></i></div>
                     <div class="name"><strong style="color: #297ff9">{{trans('file.profit')}}</strong></div>
@@ -165,7 +149,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-7 mt-4">
+            {{-- <div class="col-md-7 mt-4">
               <div class="card line-chart-example">
                 <div class="card-header d-flex align-items-center">
                   <h4>{{trans('file.Cash Flow')}}</h4>
@@ -192,8 +176,8 @@
                   <canvas id="cashFlow" data-color = "{{$color}}" data-color_rgba = "{{$color_rgba}}" data-recieved = "{{json_encode($payment_recieved)}}" data-sent = "{{json_encode($payment_sent)}}" data-month = "{{json_encode($month)}}" data-label1="{{trans('file.Payment Recieved')}}" data-label2="{{trans('file.Payment Sent')}}"></canvas>
                 </div>
               </div>
-            </div>
-            <div class="col-md-5 mt-4">
+            </div> --}}
+            {{-- <div class="col-md-5 mt-4">
               <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                   <h4>{{date('F')}} {{date('Y')}}</h4>
@@ -202,13 +186,13 @@
                     <canvas id="transactionChart" data-color = "{{$color}}" data-color_rgba = "{{$color_rgba}}" data-revenue={{$revenue}} data-purchase={{$purchase}} data-expense={{$expense}} data-label1="{{trans('file.Purchase')}}" data-label2="{{trans('file.revenue')}}" data-label3="{{trans('file.Expense')}}" width="100" height="95"> </canvas>
                 </div>
               </div>
-            </div>
+            </div> --}}
           </div>
         </div>
         
         <div class="container-fluid">
           <div class="row">
-            <div class="col-md-12">
+            {{-- <div class="col-md-12">
               <div class="card">
                 <div class="card-header d-flex align-items-center">
                   <h4>{{trans('file.yearly report')}}</h4>
@@ -217,11 +201,15 @@
                   <canvas id="saleChart" data-sale_chart_value = "{{json_encode($yearly_sale_amount)}}" data-purchase_chart_value = "{{json_encode($yearly_purchase_amount)}}" data-label1="{{trans('file.Purchased Amount')}}" data-label2="{{trans('file.Sold Amount')}}"></canvas>
                 </div>
               </div>
-            </div>
-            <div class="col-md-7">
+            </div> --}}
+            <div class="col-md-12">
               <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
+                  @if (Auth::user()->role_id == 1)
                   <h4>{{trans('file.Recent Transaction')}}</h4>
+                  @else
+                  <h4>{{trans('file.Recent Sales')}}</h4>
+                  @endif                  
                   <div class="right-column">
                     <div class="badge badge-primary">{{trans('file.latest')}} 5</div>
                   </div>
@@ -230,15 +218,14 @@
                   <li class="nav-item">
                     <a class="nav-link active" href="#sale-latest" role="tab" data-toggle="tab">{{trans('file.Sale')}}</a>
                   </li>
+                  @if (Auth::user()->role_id == 1)
                   <li class="nav-item">
                     <a class="nav-link" href="#purchase-latest" role="tab" data-toggle="tab">{{trans('file.Purchase')}}</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#quotation-latest" role="tab" data-toggle="tab">{{trans('file.Quotation')}}</a>
-                  </li>
-                  <li class="nav-item">
                     <a class="nav-link" href="#payment-latest" role="tab" data-toggle="tab">{{trans('file.Payment')}}</a>
                   </li>
+                  @endif
                 </ul>
 
                 <div class="tab-content">
@@ -256,20 +243,16 @@
                           </thead>
                           <tbody>
                             @foreach($recent_sale as $sale)
-                            <?php //$customer = DB::table('customers')->find($sale->customer_id); ?>
                             <tr>
                               <td>{{ date($general_setting->date_format, strtotime($sale->created_at->toDateString())) }}</td>
                               <td>{{$sale->reference_no}}</td>
-                              {{-- <td>{{$customer->name}}</td> --}}
-                              <td></td>
-                              @if($sale->sale_status == 1)
-                              <td><div class="badge badge-success">{{trans('file.Completed')}}</div></td>
-                              @elseif($sale->sale_status == 2)
-                              <td><div class="badge badge-danger">{{trans('file.Pending')}}</div></td>
+                              <td>{{$sale->customer_name}}</td>
+                              @if($sale->is_valide == 1)
+                              <td><div class="badge badge-success">{{trans('file.Confirmed')}}</div></td>
                               @else
-                              <td><div class="badge badge-warning">{{trans('file.Draft')}}</div></td>
+                              <td><div class="badge badge-warning">{{trans('file.Not Confirmed')}}</div></td>
                               @endif
-                              <td>{{$sale->grand_total}}</td>
+                              <td>{{number_format($sale->grand_total, 2, ".", ",")}}</td>
                             </tr>
                             @endforeach
                           </tbody>
@@ -308,38 +291,7 @@
                               @else
                               <td><div class="badge badge-danger">Ordered</div></td>
                               @endif
-                              <td>{{$purchase->grand_total}}</td>
-                            </tr>
-                            @endforeach
-                          </tbody>
-                        </table>
-                      </div>
-                  </div>
-                  <div role="tabpanel" class="tab-pane fade" id="quotation-latest">
-                      <div class="table-responsive">
-                        <table class="table">
-                          <thead>
-                            <tr>
-                              <th>{{trans('file.date')}}</th>
-                              <th>{{trans('file.reference')}}</th>
-                              <th>{{trans('file.customer')}}</th>
-                              <th>{{trans('file.status')}}</th>
-                              <th>{{trans('file.grand total')}}</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            @foreach($recent_quotation as $quotation)
-                            <?php $customer = DB::table('customers')->find($quotation->customer_id); ?>
-                            <tr>
-                              <td>{{date($general_setting->date_format, strtotime($quotation->created_at->toDateString())) }}</td>
-                              <td>{{$quotation->reference_no}}</td>
-                              <td>{{$customer->name}}</td>
-                              @if($quotation->quotation_status == 1)
-                              <td><div class="badge badge-danger">Pending</div></td>
-                              @else
-                              <td><div class="badge badge-success">Sent</div></td>
-                              @endif
-                              <td>{{$quotation->grand_total}}</td>
+                              <td>{{number_format($purchase->grand_total, 2, ".", ",")}}</td>
                             </tr>
                             @endforeach
                           </tbody>
@@ -362,7 +314,7 @@
                             <tr>
                               <td>{{date($general_setting->date_format, strtotime($payment->created_at->toDateString())) }}</td>
                               <td>{{$payment->payment_reference}}</td>
-                              <td>{{$payment->amount}}</td>
+                              <td>{{number_format($payment->amount, 2, ".", ",")}}</td>
                               <td>{{$payment->paying_method}}</td>
                             </tr>
                             @endforeach
@@ -373,7 +325,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-5">
+            <div class="col-md-5 d-none">
               <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                   <h4>{{trans('file.Best Seller').' '.date('F')}}</h4>
@@ -404,7 +356,7 @@
                   </div>
               </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 d-none">
               <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                   <h4>{{trans('file.Best Seller').' '.date('Y'). '('.trans('file.qty').')'}}</h4>
@@ -435,7 +387,7 @@
                   </div>
               </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 d-none">
               <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                   <h4>{{trans('file.Best Seller').' '.date('Y') . '('.trans('file.price').')'}}</h4>

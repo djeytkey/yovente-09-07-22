@@ -97,7 +97,7 @@
         <div class="container-fluid">
           <div class="col-md-12">
             <div class="brand-text float-left mt-4">
-                <h3><?php echo e(ucfirst(trans('file.welcome'))); ?> <span><?php echo e(ucfirst(Auth::user()->last_name)); ?> <?php echo e(ucfirst(Auth::user()->first_name)); ?></span> </h3>
+                <h3><?php echo e(ucfirst(trans('file.welcome'))); ?> <span><?php echo e(strtoupper(Auth::user()->last_name)); ?> <?php echo e(ucfirst(Auth::user()->first_name)); ?></span> </h3>
             </div>
             <div class="filter-toggle btn-group">
               <button class="btn btn-secondary date-btn" data-start_date="<?php echo e(date('Y-m-d')); ?>" data-end_date="<?php echo e(date('Y-m-d')); ?>"><?php echo e(trans('file.Today')); ?></button>
@@ -115,7 +115,7 @@
             <div class="col-md-12 form-group">
               <div class="row">
                 <!-- Count item widget-->
-                <div class="col-sm-2">
+                <div class="col-sm-3">
                   <div class="wrapper count-title text-center">
                     <div class="icon"><i class="dripicons-graph-bar" style="color: #733686"></i></div>
                     <div class="name"><strong style="color: #733686"><?php echo e(trans('file.Total Orders')); ?></strong></div>
@@ -123,7 +123,7 @@
                   </div>
                 </div>
                 <!-- Count item widget-->
-                <div class="col-sm-2">
+                <div class="col-sm-3">
                   <div class="wrapper count-title text-center">
                     <div class="icon"><i class="dripicons-return" style="color: #ff8952"></i></div>
                     <div class="name"><strong style="color: #ff8952"><?php echo e(trans('file.Delivered / Invoiced')); ?></strong></div>
@@ -131,7 +131,7 @@
                   </div>
                 </div>
                 <!-- Count item widget-->
-                <div class="col-sm-2">
+                <div class="col-sm-3">
                   <div class="wrapper count-title text-center">
                     <div class="icon"><i class="dripicons-media-loop" style="color: #00c689"></i></div>
                     <div class="name"><strong style="color: #00c689"><?php echo e(trans('file.In progress')); ?></strong></div>
@@ -139,23 +139,7 @@
                   </div>
                 </div>
                 <!-- Count item widget-->
-                <div class="col-sm-2">
-                  <div class="wrapper count-title text-center">
-                    <div class="icon"><i class="dripicons-trophy" style="color: #297ff9"></i></div>
-                    <div class="name"><strong style="color: #297ff9"><?php echo e(trans('file.profit')); ?></strong></div>
-                    <div class="count-number profit-data"><?php echo e(number_format((float)$profit, 2, '.', '')); ?></div>
-                  </div>
-                </div>
-                <!-- Count item widget-->
-                <div class="col-sm-2">
-                  <div class="wrapper count-title text-center">
-                    <div class="icon"><i class="dripicons-trophy" style="color: #297ff9"></i></div>
-                    <div class="name"><strong style="color: #297ff9"><?php echo e(trans('file.profit')); ?></strong></div>
-                    <div class="count-number profit-data"><?php echo e(number_format((float)$profit, 2, '.', '')); ?></div>
-                  </div>
-                </div>
-                <!-- Count item widget-->
-                <div class="col-sm-2">
+                <div class="col-sm-3">
                   <div class="wrapper count-title text-center">
                     <div class="icon"><i class="dripicons-trophy" style="color: #297ff9"></i></div>
                     <div class="name"><strong style="color: #297ff9"><?php echo e(trans('file.profit')); ?></strong></div>
@@ -164,63 +148,22 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-7 mt-4">
-              <div class="card line-chart-example">
-                <div class="card-header d-flex align-items-center">
-                  <h4><?php echo e(trans('file.Cash Flow')); ?></h4>
-                </div>
-                <div class="card-body">
-                  <?php
-                    if($general_setting->theme == 'default.css'){
-                      $color = '#733686';
-                      $color_rgba = 'rgba(115, 54, 134, 0.8)';
-                    }
-                    elseif($general_setting->theme == 'green.css'){
-                        $color = '#2ecc71';
-                        $color_rgba = 'rgba(46, 204, 113, 0.8)';
-                    }
-                    elseif($general_setting->theme == 'blue.css'){
-                        $color = '#3498db';
-                        $color_rgba = 'rgba(52, 152, 219, 0.8)';
-                    }
-                    elseif($general_setting->theme == 'dark.css'){
-                        $color = '#34495e';
-                        $color_rgba = 'rgba(52, 73, 94, 0.8)';
-                    }
-                  ?>
-                  <canvas id="cashFlow" data-color = "<?php echo e($color); ?>" data-color_rgba = "<?php echo e($color_rgba); ?>" data-recieved = "<?php echo e(json_encode($payment_recieved)); ?>" data-sent = "<?php echo e(json_encode($payment_sent)); ?>" data-month = "<?php echo e(json_encode($month)); ?>" data-label1="<?php echo e(trans('file.Payment Recieved')); ?>" data-label2="<?php echo e(trans('file.Payment Sent')); ?>"></canvas>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-5 mt-4">
-              <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                  <h4><?php echo e(date('F')); ?> <?php echo e(date('Y')); ?></h4>
-                </div>
-                <div class="pie-chart mb-2">
-                    <canvas id="transactionChart" data-color = "<?php echo e($color); ?>" data-color_rgba = "<?php echo e($color_rgba); ?>" data-revenue=<?php echo e($revenue); ?> data-purchase=<?php echo e($purchase); ?> data-expense=<?php echo e($expense); ?> data-label1="<?php echo e(trans('file.Purchase')); ?>" data-label2="<?php echo e(trans('file.revenue')); ?>" data-label3="<?php echo e(trans('file.Expense')); ?>" width="100" height="95"> </canvas>
-                </div>
-              </div>
-            </div>
+            
+            
           </div>
         </div>
         
         <div class="container-fluid">
           <div class="row">
+            
             <div class="col-md-12">
               <div class="card">
-                <div class="card-header d-flex align-items-center">
-                  <h4><?php echo e(trans('file.yearly report')); ?></h4>
-                </div>
-                <div class="card-body">
-                  <canvas id="saleChart" data-sale_chart_value = "<?php echo e(json_encode($yearly_sale_amount)); ?>" data-purchase_chart_value = "<?php echo e(json_encode($yearly_purchase_amount)); ?>" data-label1="<?php echo e(trans('file.Purchased Amount')); ?>" data-label2="<?php echo e(trans('file.Sold Amount')); ?>"></canvas>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-7">
-              <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
+                  <?php if(Auth::user()->role_id == 1): ?>
                   <h4><?php echo e(trans('file.Recent Transaction')); ?></h4>
+                  <?php else: ?>
+                  <h4><?php echo e(trans('file.Recent Sales')); ?></h4>
+                  <?php endif; ?>                  
                   <div class="right-column">
                     <div class="badge badge-primary"><?php echo e(trans('file.latest')); ?> 5</div>
                   </div>
@@ -229,15 +172,14 @@
                   <li class="nav-item">
                     <a class="nav-link active" href="#sale-latest" role="tab" data-toggle="tab"><?php echo e(trans('file.Sale')); ?></a>
                   </li>
+                  <?php if(Auth::user()->role_id == 1): ?>
                   <li class="nav-item">
                     <a class="nav-link" href="#purchase-latest" role="tab" data-toggle="tab"><?php echo e(trans('file.Purchase')); ?></a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#quotation-latest" role="tab" data-toggle="tab"><?php echo e(trans('file.Quotation')); ?></a>
-                  </li>
-                  <li class="nav-item">
                     <a class="nav-link" href="#payment-latest" role="tab" data-toggle="tab"><?php echo e(trans('file.Payment')); ?></a>
                   </li>
+                  <?php endif; ?>
                 </ul>
 
                 <div class="tab-content">
@@ -255,20 +197,16 @@
                           </thead>
                           <tbody>
                             <?php $__currentLoopData = $recent_sale; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sale): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <?php //$customer = DB::table('customers')->find($sale->customer_id); ?>
                             <tr>
                               <td><?php echo e(date($general_setting->date_format, strtotime($sale->created_at->toDateString()))); ?></td>
                               <td><?php echo e($sale->reference_no); ?></td>
-                              
-                              <td></td>
-                              <?php if($sale->sale_status == 1): ?>
-                              <td><div class="badge badge-success"><?php echo e(trans('file.Completed')); ?></div></td>
-                              <?php elseif($sale->sale_status == 2): ?>
-                              <td><div class="badge badge-danger"><?php echo e(trans('file.Pending')); ?></div></td>
+                              <td><?php echo e($sale->customer_name); ?></td>
+                              <?php if($sale->is_valide == 1): ?>
+                              <td><div class="badge badge-success"><?php echo e(trans('file.Confirmed')); ?></div></td>
                               <?php else: ?>
-                              <td><div class="badge badge-warning"><?php echo e(trans('file.Draft')); ?></div></td>
+                              <td><div class="badge badge-warning"><?php echo e(trans('file.Not Confirmed')); ?></div></td>
                               <?php endif; ?>
-                              <td><?php echo e($sale->grand_total); ?></td>
+                              <td><?php echo e(number_format($sale->grand_total, 2, ".", ",")); ?></td>
                             </tr>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                           </tbody>
@@ -307,38 +245,7 @@
                               <?php else: ?>
                               <td><div class="badge badge-danger">Ordered</div></td>
                               <?php endif; ?>
-                              <td><?php echo e($purchase->grand_total); ?></td>
-                            </tr>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                          </tbody>
-                        </table>
-                      </div>
-                  </div>
-                  <div role="tabpanel" class="tab-pane fade" id="quotation-latest">
-                      <div class="table-responsive">
-                        <table class="table">
-                          <thead>
-                            <tr>
-                              <th><?php echo e(trans('file.date')); ?></th>
-                              <th><?php echo e(trans('file.reference')); ?></th>
-                              <th><?php echo e(trans('file.customer')); ?></th>
-                              <th><?php echo e(trans('file.status')); ?></th>
-                              <th><?php echo e(trans('file.grand total')); ?></th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <?php $__currentLoopData = $recent_quotation; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $quotation): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <?php $customer = DB::table('customers')->find($quotation->customer_id); ?>
-                            <tr>
-                              <td><?php echo e(date($general_setting->date_format, strtotime($quotation->created_at->toDateString()))); ?></td>
-                              <td><?php echo e($quotation->reference_no); ?></td>
-                              <td><?php echo e($customer->name); ?></td>
-                              <?php if($quotation->quotation_status == 1): ?>
-                              <td><div class="badge badge-danger">Pending</div></td>
-                              <?php else: ?>
-                              <td><div class="badge badge-success">Sent</div></td>
-                              <?php endif; ?>
-                              <td><?php echo e($quotation->grand_total); ?></td>
+                              <td><?php echo e(number_format($purchase->grand_total, 2, ".", ",")); ?></td>
                             </tr>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                           </tbody>
@@ -361,7 +268,7 @@
                             <tr>
                               <td><?php echo e(date($general_setting->date_format, strtotime($payment->created_at->toDateString()))); ?></td>
                               <td><?php echo e($payment->payment_reference); ?></td>
-                              <td><?php echo e($payment->amount); ?></td>
+                              <td><?php echo e(number_format($payment->amount, 2, ".", ",")); ?></td>
                               <td><?php echo e($payment->paying_method); ?></td>
                             </tr>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -372,7 +279,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-5">
+            <div class="col-md-5 d-none">
               <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                   <h4><?php echo e(trans('file.Best Seller').' '.date('F')); ?></h4>
@@ -403,7 +310,7 @@
                   </div>
               </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 d-none">
               <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                   <h4><?php echo e(trans('file.Best Seller').' '.date('Y'). '('.trans('file.qty').')'); ?></h4>
@@ -434,7 +341,7 @@
                   </div>
               </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 d-none">
               <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                   <h4><?php echo e(trans('file.Best Seller').' '.date('Y') . '('.trans('file.price').')'); ?></h4>

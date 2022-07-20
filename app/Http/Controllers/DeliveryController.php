@@ -72,6 +72,7 @@ class DeliveryController extends Controller
         if ($delivery->exists) {
             $delivery->delivered_by = $data['delivered_by'];
             $delivery->note = $data['note'];
+            $delivery->is_close = $data['is_close'];
             $delivery->save();
         } else {
             $delivery->reference_no = $data['reference_no'];
@@ -81,6 +82,7 @@ class DeliveryController extends Controller
             $delivery->sold_by = $lims_sale_data->user_id;
             $delivery->delivered_by = $data['delivered_by'];
             $delivery->note = $data['note'];
+            $delivery->is_close = $data['is_close'];
             $delivery->save();
         }
         $deliveries = new DeliveryStatus();

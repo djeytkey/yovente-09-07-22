@@ -398,6 +398,7 @@
         $(this).addClass("active");
         var start_date = $(this).data('start_date');
         var end_date = $(this).data('end_date');
+        alert("Start : " + start_date + "\nEnd : " + end_date);
         $.get('dashboard-filter/' + start_date + '/' + end_date, function(data) {
             dashboardFilter(data);
         });

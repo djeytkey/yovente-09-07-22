@@ -46,25 +46,17 @@ class HomeController extends Controller
         $general_setting = DB::table('general_settings')->latest()->first();
         if(Auth::user()->role_id > 2 && $general_setting->staff_access == 'own') { // Role Vendeur
             $total_sales = Sale::where('user_id', Auth::id())->count();
-            $livre_facture = Delivery::where('sold_by', Auth::id())->count();
-            $en_cours = Delivery::where('sold_by', Auth::id())->count();
-            // $livre_facture = Delivery::where([
-            //                                     ['sold_by', Auth::id()],
-            //                                     ['status', '4']
-            //                                 ])
-            //                             ->count();
-            // $en_cours = Delivery::where([
-            //                                 ['sold_by', Auth::id()],
-            //                                 ['status', '<', '4']
-            //                             ])
-            //                         ->count();
+            $livre_facture = Delivery::where([['sold_by', Auth::id()], ['is_close', true]])->count();
+            $en_cours = Delivery::where([['sold_by', Auth::id()], ['is_close', false]])->count();
+            $profit = 0;
+
             
             $product_sale_data = Sale::join('product_sales', 'sales.id','=', 'product_sales.sale_id')
-                ->select(DB::raw('product_sales.product_id, product_sales.product_batch_id, sum(product_sales.qty) as sold_qty, sum(product_sales.total) as sold_amount'))
+                ->select(DB::raw('product_sales.product_id, sum(product_sales.qty) as sold_qty, sum(product_sales.total) as sold_amount'))
                 ->where('sales.user_id', Auth::id())
                 ->whereDate('product_sales.created_at', '>=' , $start_date)
                 ->whereDate('product_sales.created_at', '<=' , $end_date)
-                ->groupBy('product_sales.product_id', 'product_sales.product_batch_id')
+                ->groupBy('product_sales.product_id')
                 ->get();
 
             $product_revenue = 0;
@@ -111,8 +103,10 @@ class HomeController extends Controller
         }
         else { // Role Admin
             $total_sales = Sale::all()->count();
-            $livre_facture = Delivery::all()->count();
-            $en_cours = Delivery::all()->count();
+            $livre_facture = Delivery::where('is_close', true)->count();
+            $en_cours = Delivery::where('is_close', false)->count();
+            // $livre_facture = Delivery::all()->count();
+            // $en_cours = Delivery::all()->count();
             // $livre_facture = Delivery::where('status', '4')->count();
             // $en_cours = Delivery::where('status', '<', '4')->count();
             $product_sale_data = Product_Sale::select(DB::raw('product_id, product_batch_id, sum(qty) as sold_qty, sum(total) as sold_amount'))->whereDate('created_at', '>=' , $start_date)->whereDate('created_at', '<=' , $end_date)->groupBy('product_id', 'product_batch_id')->get();
@@ -296,9 +290,7 @@ class HomeController extends Controller
 
 
 /*<?php
-
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use App\Sale;
 use App\Returns;
@@ -316,19 +308,16 @@ use DB;
 use Auth;
 use Printing;
 use Rawilk\Printing\Contracts\Printer;
-
 class HomeController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth');
     }
-
     public function dashboard()
     {
         return view('home');
     }
-
     public function index()
     {
         if(Auth::user()->role_id == 5) {
@@ -341,15 +330,12 @@ class HomeController extends Controller
                            ->orderBy('payments.created_at', 'desc')
                            ->get();
             $lims_quotation_data = Quotation::with('biller', 'customer', 'supplier', 'user')->orderBy('id', 'desc')->where('customer_id', $customer->id)->orderBy('created_at', 'desc')->get();
-
             $lims_return_data = Returns::with('warehouse', 'customer', 'biller')->where('customer_id', $customer->id)->orderBy('created_at', 'desc')->get();
             return view('customer_index', compact('lims_sale_data', 'lims_payment_data', 'lims_quotation_data', 'lims_return_data'));
         }
-
         $start_date = date("Y").'-'.date("m").'-'.'01';
         $end_date = date("Y").'-'.date("m").'-'.date('t', mktime(0, 0, 0, date("m"), 1, date("Y")));
         $yearly_sale_amount = [];
-
         $general_setting = DB::table('general_settings')->latest()->first();
         if(Auth::user()->role_id > 2 && $general_setting->staff_access == 'own') {
             $product_sale_data = Sale::join('product_sales', 'sales.id','=', 'product_sales.sale_id')
@@ -359,7 +345,6 @@ class HomeController extends Controller
                 ->whereDate('product_sales.created_at', '<=' , $end_date)
                 ->groupBy('product_sales.product_id', 'product_sales.product_batch_id')
                 ->get();
-
             $product_revenue = 0;
             $product_cost = 0;
             $profit = 0;
@@ -371,7 +356,6 @@ class HomeController extends Controller
                     ])->get();
                 else
                     $product_purchase_data = ProductPurchase::where('product_id', $product_sale->product_id)->get();
-
                 $purchased_qty = 0;
                 $purchased_amount = 0;
                 $sold_qty = $product_sale->sold_qty;
@@ -386,10 +370,8 @@ class HomeController extends Controller
                         break;
                     }
                 }
-
                 $product_cost += $purchased_amount;
             }
-
             $revenue = Sale::whereDate('created_at', '>=' , $start_date)->where('user_id', Auth::id())->whereDate('created_at', '<=' , $end_date)->sum('grand_total');
             $return = Returns::whereDate('created_at', '>=' , $start_date)->where('user_id', Auth::id())->whereDate('created_at', '<=' , $end_date)->sum('grand_total');
             $purchase_return = ReturnPurchase::whereDate('created_at', '>=' , $start_date)->where('user_id', Auth::id())->whereDate('created_at', '<=' , $end_date)->sum('grand_total');
@@ -404,7 +386,6 @@ class HomeController extends Controller
         }
         else {
             $product_sale_data = Product_Sale::select(DB::raw('product_id, product_batch_id, sum(qty) as sold_qty, sum(total) as sold_amount'))->whereDate('created_at', '>=' , $start_date)->whereDate('created_at', '<=' , $end_date)->groupBy('product_id', 'product_batch_id')->get();
-
             $product_revenue = 0;
             $product_cost = 0;
             $profit = 0;
@@ -416,7 +397,6 @@ class HomeController extends Controller
                     ])->get();
                 else
                     $product_purchase_data = ProductPurchase::where('product_id', $product_sale->product_id)->get();
-
                 $purchased_qty = 0;
                 $purchased_amount = 0;
                 $sold_qty = $product_sale->sold_qty;
@@ -431,10 +411,8 @@ class HomeController extends Controller
                         break;
                     }
                 }
-
                 $product_cost += $purchased_amount;
             }
-
             $revenue = Sale::whereDate('created_at', '>=' , $start_date)->whereDate('created_at', '<=' , $end_date)->sum('grand_total');
             $return = Returns::whereDate('created_at', '>=' , $start_date)->whereDate('created_at', '<=' , $end_date)->sum('grand_total');
             $purchase_return = ReturnPurchase::whereDate('created_at', '>=' , $start_date)->whereDate('created_at', '<=' , $end_date)->sum('grand_total');
@@ -447,22 +425,16 @@ class HomeController extends Controller
             $recent_quotation = Quotation::orderBy('id', 'desc')->take(5)->get();
             $recent_payment = Payment::orderBy('id', 'desc')->take(5)->get();
         }
-
         $best_selling_qty = Product_Sale::select(DB::raw('product_id, sum(qty) as sold_qty'))->whereDate('created_at', '>=' , $start_date)->whereDate('created_at', '<=' , $end_date)->groupBy('product_id')->orderBy('sold_qty', 'desc')->take(5)->get();
-
         $yearly_best_selling_qty = Product_Sale::select(DB::raw('product_id, sum(qty) as sold_qty'))->whereDate('created_at', '>=' , date("Y").'-01-01')->whereDate('created_at', '<=' , date("Y").'-12-31')->groupBy('product_id')->orderBy('sold_qty', 'desc')->take(5)->get();
-
         $yearly_best_selling_price = Product_Sale::select(DB::raw('product_id, sum(total) as total_price'))->whereDate('created_at', '>=' , date("Y").'-01-01')->whereDate('created_at', '<=' , date("Y").'-12-31')->groupBy('product_id')->orderBy('total_price', 'desc')->take(5)->get();
-
         //cash flow of last 6 months
         $start = strtotime(date('Y-m-01', strtotime('-6 month', strtotime(date('Y-m-d') ))));
         $end = strtotime(date('Y-m-'.date('t', mktime(0, 0, 0, date("m"), 1, date("Y")))));
-
         while($start < $end)
         {
             $start_date = date("Y-m", $start).'-'.'01';
             $end_date = date("Y-m", $start).'-'.date('t', mktime(0, 0, 0, date("m", $start), 1, date("Y", $start)));
-
             if(Auth::user()->role_id > 2 && $general_setting->staff_access == 'own') {
                 $recieved_amount = DB::table('payments')->whereNotNull('sale_id')->whereDate('created_at', '>=' , $start_date)->whereDate('created_at', '<=' , $end_date)->where('user_id', Auth::id())->sum('amount');
                 $sent_amount = DB::table('payments')->whereNotNull('purchase_id')->whereDate('created_at', '>=' , $start_date)->whereDate('created_at', '<=' , $end_date)->where('user_id', Auth::id())->sum('amount');
@@ -508,7 +480,6 @@ class HomeController extends Controller
         //return $month;
         return view('index', compact('revenue', 'purchase', 'expense', 'return', 'purchase_return', 'profit', 'payment_recieved', 'payment_sent', 'month', 'yearly_sale_amount', 'yearly_purchase_amount', 'recent_sale', 'recent_purchase', 'recent_quotation', 'recent_payment', 'best_selling_qty', 'yearly_best_selling_qty', 'yearly_best_selling_price'));
     }
-
     public function dashboardFilter($start_date, $end_date)
     {
         $general_setting = DB::table('general_settings')->latest()->first();
@@ -519,7 +490,6 @@ class HomeController extends Controller
             $revenue -= $return;
             $purchase = Purchase::whereDate('created_at', '>=' , $start_date)->whereDate('created_at', '<=' , $end_date)->where('user_id', Auth::id())->sum('grand_total');
             $profit = $revenue + $purchase_return - $purchase;
-
             $data[0] = $revenue;
             $data[1] = $return;
             $data[2] = $profit;
@@ -532,7 +502,6 @@ class HomeController extends Controller
             $revenue -= $return;
             $purchase = Purchase::whereDate('created_at', '>=' , $start_date)->whereDate('created_at', '<=' , $end_date)->sum('grand_total');
             $profit = $revenue + $purchase_return - $purchase;
-
             $data[0] = $revenue;
             $data[1] = $return;
             $data[2] = $profit;
@@ -541,7 +510,6 @@ class HomeController extends Controller
         
         return $data;
     }
-
     public function myTransaction($year, $month)
     {
         $start = 1;

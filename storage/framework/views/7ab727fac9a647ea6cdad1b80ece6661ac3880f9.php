@@ -254,6 +254,7 @@
                 </div>
                 <input type="hidden" name="reference_no">
                 <input type="hidden" name="sale_id">
+                <input type="hidden" name="is_close" value="0">
                 <button type="submit" class="btn btn-primary"><?php echo e(trans('file.submit')); ?></button>
                 <?php echo e(Form::close()); ?>
 
@@ -287,6 +288,16 @@
           newWin.document.close();
           setTimeout(function(){newWin.close();},10);
     });
+
+    $('select[name="status"]').on("change", function() {
+        var id = $(this).val();
+        if(id == "4")
+            $('input[name="is_close"]').val("1");
+        else {
+            $('input[name="is_close"]').val("0");
+        }
+    });
+
 
     function confirmDelete() {
       if (confirm("Are you sure want to delete?")) {

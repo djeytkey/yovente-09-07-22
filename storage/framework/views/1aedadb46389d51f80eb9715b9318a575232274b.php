@@ -1327,7 +1327,7 @@
                                     $retait_total = \App\Withdrawal::where('user_id', Auth::id())->sum('withdrawals.withdraw_amount');
                                     $user_sales = \App\Sale::where([
                                                                         ['user_id', Auth::id()],
-                                                                        ['payment_status', '=', '4']
+                                                                        ['delivery_status', 4]
                                                                     ])->get();
                                     if ($user_sales->count() > 0) {
                                         $grand_total = 0;

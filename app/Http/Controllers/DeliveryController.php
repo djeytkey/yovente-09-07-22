@@ -41,17 +41,17 @@ class DeliveryController extends Controller
     	if($lims_delivery_data){
             $delivery_data[] = $lims_delivery_data->reference_no;
             $delivery_data[] = $lims_sale_data->reference_no;
-            $delivery_data[] = $lims_sale_data->customer_name;          //Customer Name
-    		$delivery_data[] = $lims_sale_data->customer_tel;           //Customer Tel
-    		$delivery_data[] = $lims_sale_data->customer_address;       //Customer Address
-            $delivery_data[] = $lims_city_data->name;                   //Customer City
+            $delivery_data[] = $lims_sale_data->customer_name;
+    		$delivery_data[] = $lims_sale_data->customer_tel;
+    		$delivery_data[] = $lims_sale_data->customer_address;
+            $delivery_data[] = $lims_city_data->name;
     		$delivery_data[] = $lims_delivery_data->delivered_by;
     		$delivery_data[] = $lims_delivery_data->note;
             $delivery_data[] = date('d/m/Y H:i:s');
     	}
     	else{ //Première livraison
-    		$delivery_data[] = 'dr-' . date("dmy") . '-'. date("His");  //Delivery reference
-    		$delivery_data[] = $lims_sale_data->reference_no;           //Sale reference
+    		$delivery_data[] = 'dr-' . date("dmy") . '-'. date("His");
+    		$delivery_data[] = $lims_sale_data->reference_no;
     		$delivery_data[] = $lims_sale_data->customer_name;          //Customer Name
     		$delivery_data[] = $lims_sale_data->customer_tel;           //Customer Tel
     		$delivery_data[] = $lims_sale_data->customer_address;       //Customer Address
@@ -69,6 +69,9 @@ class DeliveryController extends Controller
         //dd($request);
         $data = $request->all();
         $delivery = Delivery::firstOrNew(['reference_no' => $data['reference_no'] ]);
+        $lims_sale_data = Sale::find($data['sale_id']);
+        $lims_sale_data->delivery_status = $data['status'];
+        $lims_sale_data->save();
         if ($delivery->exists) {
             $delivery->delivered_by = $data['delivered_by'];
             $delivery->note = $data['note'];
@@ -78,7 +81,6 @@ class DeliveryController extends Controller
             $delivery->reference_no = $data['reference_no'];
             $delivery->sale_id = $data['sale_id'];
             $delivery->user_id = Auth::id();
-            $lims_sale_data = Sale::find($data['sale_id']);
             $delivery->sold_by = $lims_sale_data->user_id;
             $delivery->delivered_by = $data['delivered_by'];
             $delivery->note = $data['note'];

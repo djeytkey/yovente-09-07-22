@@ -115,35 +115,51 @@
             <div class="col-md-12 form-group">
               <div class="row">
                 <!-- Count item widget-->
-                <div class="col-sm-3">
+                <div class="col-sm-2">
                   <div class="wrapper count-title text-center">
                     <div class="icon"><i class="dripicons-graph-bar" style="color: #733686"></i></div>
                     <div class="name"><strong style="color: #733686"><?php echo e(trans('file.Total Orders')); ?></strong></div>
-                    <div class="count-number revenue-data"><?php echo e($total_sales); ?></div>
+                    <div class="count-number total-order-data"><?php echo e($total_sales); ?></div>
                   </div>
                 </div>
                 <!-- Count item widget-->
-                <div class="col-sm-3">
+                <div class="col-sm-2">
                   <div class="wrapper count-title text-center">
                     <div class="icon"><i class="dripicons-return" style="color: #ff8952"></i></div>
                     <div class="name"><strong style="color: #ff8952"><?php echo e(trans('file.Delivered / Invoiced')); ?></strong></div>
-                    <div class="count-number return-data"><?php echo e($livre_facture); ?></div>
+                    <div class="count-number delivered-data"><?php echo e($livre_facture); ?></div>
                   </div>
                 </div>
                 <!-- Count item widget-->
-                <div class="col-sm-3">
+                <div class="col-sm-2">
                   <div class="wrapper count-title text-center">
                     <div class="icon"><i class="dripicons-media-loop" style="color: #00c689"></i></div>
                     <div class="name"><strong style="color: #00c689"><?php echo e(trans('file.In progress')); ?></strong></div>
-                    <div class="count-number purchase_return-data"><?php echo e($en_cours); ?></div>
+                    <div class="count-number in-progress-data"><?php echo e($en_cours); ?></div>
                   </div>
                 </div>
                 <!-- Count item widget-->
-                <div class="col-sm-3">
+                <div class="col-sm-2">
                   <div class="wrapper count-title text-center">
                     <div class="icon"><i class="dripicons-trophy" style="color: #297ff9"></i></div>
                     <div class="name"><strong style="color: #297ff9"><?php echo e(trans('file.profit')); ?></strong></div>
-                    <div class="count-number profit-data"><?php echo e(number_format((float)$profit, 2, '.', '')); ?></div>
+                    <div class="count-number total-profit-data"><?php echo e(number_format((float)$profit, 2, '.', '')); ?></div>
+                  </div>
+                </div>
+                <!-- Count item widget-->
+                <div class="col-sm-2">
+                  <div class="wrapper count-title text-center">
+                    <div class="icon"><i class="dripicons-trophy" style="color: #297ff9"></i></div>
+                    <div class="name"><strong style="color: #297ff9"><?php echo e(trans('file.Retrait')); ?></strong></div>
+                    <div class="count-number profit-claimed-data"><?php echo e(number_format((float)$profit, 2, '.', '')); ?></div>
+                  </div>
+                </div>
+                <!-- Count item widget-->
+                <div class="col-sm-2">
+                  <div class="wrapper count-title text-center">
+                    <div class="icon"><i class="dripicons-trophy" style="color: #297ff9"></i></div>
+                    <div class="name"><strong style="color: #297ff9"><?php echo e(trans('file.Reste')); ?></strong></div>
+                    <div class="count-number profit-remain-data"><?php echo e(number_format((float)$profit, 2, '.', '')); ?></div>
                   </div>
                 </div>
               </div>

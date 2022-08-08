@@ -150,11 +150,14 @@ class HomeController extends Controller
                 $livraison += $sale->livraison;
                 
 
-            }
+            }            
+
+            $profit = $net_price - $original_price - $livraison;
 
             $lims_withdraw_data = Withdrawal::all();
 
-            $profit = $net_price - $original_price - $livraison;
+            
+
 
             
 

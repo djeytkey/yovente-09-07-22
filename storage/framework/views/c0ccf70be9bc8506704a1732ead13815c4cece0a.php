@@ -150,7 +150,7 @@
                 <div class="col-sm-2">
                   <div class="wrapper count-title text-center">
                     <div class="icon"><i class="dripicons-trophy" style="color: #297ff9"></i></div>
-                    <div class="name"><strong style="color: #297ff9"><?php echo e(trans('file.Retrait')); ?></strong></div>
+                    <div class="name"><strong style="color: #297ff9"><?php echo e(trans('file.Demandes Retrait')); ?></strong></div>
                     <div class="count-number profit-claimed-data"><?php echo e(number_format((float)$profit, 2, '.', '')); ?></div>
                   </div>
                 </div>

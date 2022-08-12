@@ -131,6 +131,8 @@ class HomeController extends Controller
             $en_cours = Delivery::where('is_close', false)->count();
 
             $profit = 0;
+            $reste = 0;
+            $total_withdraws = 0;
             $original_price = 0;
             $net_price = 0;
             $diff_price = 0;
@@ -154,33 +156,12 @@ class HomeController extends Controller
 
             $profit = $net_price - $original_price - $livraison;
 
-            $lims_withdraw_data = Withdrawal::all();
+            $total_withdraws = Withdrawal::where('is_paid', true)->sum('withdraw_amount');
 
-            
+            $demande_withdraws = Withdrawal::where('is_paid', false)->count();
 
+            $reste = $profit - $total_withdraws;
 
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            // $livre_facture = Delivery::all()->count();
-            // $en_cours = Delivery::all()->count();
-            // $livre_facture = Delivery::where('status', '4')->count();
-            // $en_cours = Delivery::where('status', '<', '4')->count();
             $product_sale_data = Product_Sale::select(DB::raw('product_id, product_batch_id, sum(qty) as sold_qty, sum(total) as sold_amount'))->whereDate('created_at', '>=' , $start_date)->whereDate('created_at', '<=' , $end_date)->groupBy('product_id', 'product_batch_id')->get();
 
             $product_revenue = 0;
@@ -297,7 +278,7 @@ class HomeController extends Controller
             $start = strtotime("+1 month", $start);
         }
         //return $month;
-        return view('index', compact('total_sales', 'livre_facture', 'en_cours', 'revenue', 'purchase', 'expense', 'return', 'purchase_return', 'profit', 'payment_recieved', 'payment_sent', 'month', 'yearly_sale_amount', 'yearly_purchase_amount', 'recent_sale', 'recent_purchase', 'recent_quotation', 'recent_payment', 'best_selling_qty', 'yearly_best_selling_qty', 'yearly_best_selling_price'));
+        return view('index', compact('demande_withdraws', 'total_withdraws', 'reste', 'total_sales', 'livre_facture', 'en_cours', 'revenue', 'purchase', 'expense', 'return', 'purchase_return', 'profit', 'payment_recieved', 'payment_sent', 'month', 'yearly_sale_amount', 'yearly_purchase_amount', 'recent_sale', 'recent_purchase', 'recent_quotation', 'recent_payment', 'best_selling_qty', 'yearly_best_selling_qty', 'yearly_best_selling_price'));
     }
 
     public function dashboardFilter($start_date, $end_date)

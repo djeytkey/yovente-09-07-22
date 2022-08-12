@@ -143,7 +143,7 @@
                 <div class="col-sm-2">
                   <div class="wrapper count-title text-center">
                     <div class="icon"><i class="dripicons-trophy" style="color: #297ff9"></i></div>
-                    <div class="name"><strong style="color: #297ff9">{{trans('file.profit')}}</strong></div>
+                    <div class="name"><strong style="color: #297ff9">{{trans('file.Profit')}}</strong></div>
                     <div class="count-number total-profit-data">{{number_format((float)$profit, 2, '.', '')}}</div>
                   </div>
                 </div>
@@ -151,8 +151,13 @@
                 <div class="col-sm-2">
                   <div class="wrapper count-title text-center">
                     <div class="icon"><i class="dripicons-trophy" style="color: #297ff9"></i></div>
-                    <div class="name"><strong style="color: #297ff9">{{trans('file.Demandes Retrait')}}</strong></div>
-                    <div class="count-number profit-claimed-data">{{number_format((float)$profit, 2, '.', '')}}</div>
+                    <div class="name"><strong style="color: #297ff9">{{trans('file.Payé')}}</strong></div>
+                    <div class="count-number profit-claimed-data">
+                      {{number_format((float)$total_withdraws, 2, '.', '')}}
+                      @if ($demande_withdraws != 0)
+                        &nbsp;&nbsp;<span style="display: inline-flex; font-size: 0.65em;">({{ $demande_withdraws }})</span>
+                      @endif
+                      </div>
                   </div>
                 </div>
                 <!-- Count item widget-->
@@ -160,7 +165,7 @@
                   <div class="wrapper count-title text-center">
                     <div class="icon"><i class="dripicons-trophy" style="color: #297ff9"></i></div>
                     <div class="name"><strong style="color: #297ff9">{{trans('file.Reste')}}</strong></div>
-                    <div class="count-number profit-remain-data">{{number_format((float)$profit, 2, '.', '')}}</div>
+                    <div class="count-number profit-remain-data">{{number_format((float)$reste, 2, '.', '')}}</div>
                   </div>
                 </div>
               </div>
